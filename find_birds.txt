@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bird Hunt Game</title>
+  <style>
+    /* CSS Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #e6f7ff;
+    }
+
+    .game-container {
+      text-align: center;
+      margin: 0 auto;
+      max-width: 600px;
+    }
+
+    header {
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 0;
+    }
+
+    .info {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+    }
+
+    .timer, .score {
+      font-size: 1.2rem;
+    }
+
+    .game-area {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      background-color: #cce7ff;
+      border: 2px solid #4caf50;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .section {
+      position: absolute;
+      border: 1px solid #4caf50;
+      width: 33%;
+      height: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #section1 { top: 0; left: 0; }
+    #section2 { top: 0; left: 33%; }
+    #section3 { top: 0; left: 66%; }
+    #section4 { top: 50%; left: 0; }
+    #section5 { top: 50%; left: 33%; }
+    #section6 { top: 50%; left: 66%; }
+
+    .bird {
+      position: absolute;
+      width: 50px;
+      height: 50px;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+
+    #reset-btn {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    #reset-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <header>
+      <h1>Bird Hunt Game</h1>
+      <div class="info">
+        <div class="timer">Time: <span id="time">30</span>s</div>
+        <div class="score">Score: <span id="score">0</span></div>
+      </div>
+    </header>
+    <div class="game-area" id="game-area">
+      <div class="section" id="section1"></div>
+      <div class="section" id="section2"></div>
+      <div class="section" id="section3"></div>
+      <div class="section" id="section4"></div>
+      <div class="section" id="section5"></div>
+      <div class="section" id="section6"></div>
+    </div>
+    <button id="reset-btn">Restart Game</button>
+  </div>
+
+  <script>
+    // JavaScript Code
+
+    // DOM Elements
+    const gameArea = document.getElementById("game-area");
+    const scoreDisplay = document.getElementById("score");
+    const timeDisplay = document.getElementById("time");
+    const resetButton = document.getElementById("reset-btn");
+
+    // Variables
+    let score = 0;
+    let time = 30;
+    let gameInterval, timerInterval;
+
+    // Array of bird image URLs
+    const birdImages = [
+      '01.jpg',
+      '02.webp',
+      '03.jpg',
+      '04.jpg'
+    ];
+
+    // Get all the sections
+    const sections = Array.from(document.querySelectorAll('.section'));
+
+    // Generate a random position for a bird in one of the sections
+    function getRandomSection() {
+      const randomSection = sections[Math.floor(Math.random() * sections.length)];
+      return randomSection;
+    }
+
+    // Create a bird element
+    function createBird() {
+      const bird = document.createElement("div");
+      bird.classList.add("bird");
+
+      // Assign a random bird image
+      const randomImage = birdImages[Math.floor(Math.random() * birdImages.length)];
+      bird.style.backgroundImage = `url('${randomImage}')`;
+
+      // Assign the bird to a random section
+      const randomSection = getRandomSection();
+      randomSection.appendChild(bird);
+
+      // Remove the bird after 3 seconds if not clicked
+      setTimeout(() => bird.remove(), 3000);
+
+      // Add click event listener to the bird
+      bird.addEventListener("click", () => {
+        score++;
+        scoreDisplay.textContent = score;
+        bird.remove(); // Remove the bird when clicked
+      });
+    }
+
+    // Start the game timer
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        time--;
+        timeDisplay.textContent = time;
+
+        if (time <= 0) {
+          clearInterval(timerInterval);
+          clearInterval(gameInterval);
+          alert(`Game Over! Your score is ${score}.`);
+        }
+      }, 1000);
+    }
+
+    // Start the game
+    function startGame() {
+      score = 0;
+      time = 30;
+      scoreDisplay.textContent = score;
+      timeDisplay.textContent = time;
+
+      // Clear existing birds
+      sections.forEach(section => section.innerHTML = "");
+
+      // Start generating birds
+      gameInterval = setInterval(createBird, 800);
+
+      // Start the timer
+      startTimer();
+    }
+
+    // Reset the game
+    resetButton.addEventListener("click", () => {
+      clearInterval(timerInterval);
+      clearInterval(gameInterval);
+      startGame();
+    });
+
+    // Initialize the game on page load
+    window.onload = startGame;
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+//////////Second work.....///////////
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Find Birds Game</title>
+    <style>
+      /* General reset */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+
+      .heading {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px #ecf0f1;
+      }
+
+      .btn {
+        background: #2ecc71;
+        color: white;
+        padding: 15px 30px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+      }
+
+      .btn:hover {
+        background: #27ae60;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .display {
+        display: grid;
+        grid-template-columns: repeat(3, 100px);
+        gap: 15px;
+      }
+
+      .birds {
+        width: 100px;
+        height: 100px;
+        background: #3498db;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: transform 0.3s ease, background 0.3s ease;
+      }
+
+      .birds img {
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+      }
+
+      .birds:hover {
+        transform: scale(1.1);
+        background: #2980b9;
+      }
+
+      .crossmark {
+        color: #e74c3c;
+        font-size: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="heading">Find the Bird</div>
+    <button class="btn">Game Start</button>
+    <div class="display">
+      <div class="birds" data-id="0"></div>
+      <div class="birds" data-id="1"></div>
+      <div class="birds" data-id="2"></div>
+      <div class="birds" data-id="3"></div>
+      <div class="birds" data-id="4"></div>
+      <div class="birds" data-id="5"></div>
+    </div>
+
+    <script>
+      const button = document.querySelector(".btn");
+      const birds = document.querySelectorAll(".birds");
+
+      const birdImage = "01.jpg"; // Bird image file
+      let birdIndex = -1; // Initially, no bird
+
+      // Function to start the game
+      button.addEventListener("click", () => {
+        setTimeout(() => {
+          startGame();
+          
+        }, 3000);
+      });
+
+      // Function to start the game by randomly placing a hidden bird
+      function startGame() {
+        birdIndex = Math.floor(Math.random() * birds.length); // Randomly choose a bird div
+        birds.forEach((bird) => {
+          bird.innerHTML = ""; // Ensure all divs are empty at the start
+        });
+      }
+
+      // Function to handle bird clicks
+      birds.forEach((bird) => {
+        bird.addEventListener("click", () => {
+          if (birdIndex === parseInt(bird.getAttribute("data-id"))) {
+            bird.innerHTML = `<img src="${birdImage}" alt="Bird Image">`; // Show the bird image
+          } else {
+            bird.innerHTML = `<span class="crossmark"><i class="fa-solid fa-xmark"></i></span>`; // Show crossmark
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
+
+
+
+//////////// Final Code //////////////
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+   .main{
+    width: 100%;
+    height: 700px;
+    display: flex;
+    /* gap: 10px; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-around;
+    background-color: blueviolet;
+}
+    .six_box_container{
+        width: 760px;
+        height: max-content;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        /* gap: 10px; */
+        border: 1px solid #000;
+        visibility: hidden;
+    }
+    .active{
+        visibility: visible;
+    }
+    .text_1{
+        /* padding-top: 30px; */
+        color: white;
+    }
+    .find_btn{
+        width: 200px;
+        height: 50px;
+        font-size: 20px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+    }
+    .box_1{
+        width: 250px;
+        height: 250px;
+        border: 1px solid #ffffff;
+        cursor: pointer;
+        background-size:cover;
+        background-repeat: no-repeat;
+        background-color: rgb(39, 23, 23);
+        /* background-image: ; */
+    }
+    .imgadj{
+        width: 250px;
+        height: 250px;
+    }
+    .color{
+        background-color: red;
+    }
+
+    </style>
+</head>
+<body>
+    
+    <div class="main">
+        <h2 class="text_1">Find The Birds by click on the box</h2>
+        <button class="find_btn">Find the Birds</button>
+        <div class="six_box_container">
+            <div class="box_1 imgadj" ></div>
+            <div class="box_1 imgadj" ></div>
+            <div class="box_1 imgadj"></div>
+            <div class="box_1 imgadj"></div>
+            <div class="box_1 imgadj"></div>
+            <div class="box_1 imgadj"></div>
+        </div>
+    </div>
+
+    <script>
+        
+        let btn = document.querySelector(".find_btn")
+        let box = document.querySelectorAll(".box_1")
+        let img = document.querySelector(".imgadj")
+        let table = document.querySelector(".six_box_container")
+
+        // let bird = 0;
+        let bird = [
+        "01.jpeg",
+        "02.jpeg",
+        "03.jpeg",
+        "04.jpeg",
+        "05.jpeg",
+        "06.jpeg"
+      ]
+
+        
+        
+        btn.addEventListener("click",()=>{   
+            table.classList.add("active") 
+            let randombird = Math.floor(Math.random()*bird.length);
+            console.log(randombird);
+            box.forEach((elem,index)=> {
+                elem.addEventListener("click",()=>{
+                    if(index == randombird){
+                        elem.style.backgroundImage = 'url("01.jpeg")';
+                        alert("Wow Congarlution Find birds")
+                        setTimeout(()=>{
+                            location.reload()
+                        },3000)
+                        
+                    }
+                    else{
+                        elem.style.backgroundImage ='url("06.jpeg")';
+                    }
+                })
+        });
+        })
+
+    </script>
+</body>
+</html>
